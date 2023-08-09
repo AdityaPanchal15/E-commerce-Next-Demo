@@ -1,23 +1,22 @@
 'use client';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import React, { FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { addProduct } from '../redux/products/actions';
+import { connect } from 'react-redux';
 
-export default function AddProduct() {
+function AddProduct(props: any) {
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const router = useRouter();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetch('http://localhost:5000/products', {
-      method: 'POST',
-      body: JSON.stringify({ title, name, description, imageUrl, date }) as any,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    props.addProduct({ title, name, description, imageUrl, date });
+    router.push('/product-list');
   }
 
   return (
@@ -35,18 +34,11 @@ export default function AddProduct() {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
-        <TextField required id="outlined-required" fullWidth label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <TextField required id="outlined-required" fullWidth label="Name" value={name} onChange={(e) => setName(e.target.value)} />
-        <TextField required id="outlined-required" fullWidth label="Image Url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-        <TextField
-          required
-          id="outlined-required"
-          fullWidth
-          label="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <TextField required id="outlined-required" type="date" fullWidth value={date} onChange={(e) => setDate(e.target.value)} />
+        <TextField required fullWidth label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <TextField required fullWidth label="Name" value={name} onChange={(e) => setName(e.target.value)} />
+        <TextField required fullWidth label="Image Url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+        <TextField required fullWidth label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <TextField required type="date" fullWidth value={date} onChange={(e) => setDate(e.target.value)} />
         <Button variant="contained" sx={{ m: 1 }} type="submit">
           Add Product
         </Button>
@@ -54,3 +46,11 @@ export default function AddProduct() {
     </>
   );
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    addProduct: (payload: any) => dispatch(addProduct(payload)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddProduct);

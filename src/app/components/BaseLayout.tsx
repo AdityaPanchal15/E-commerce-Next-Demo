@@ -1,11 +1,13 @@
 'use client';
 import React from 'react';
-import { AppBar, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button, Tooltip, Avatar, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button, Tooltip, Avatar, Container, Badge } from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
+import { ShoppingCart } from '@mui/icons-material';
+import { connect } from 'react-redux';
 
-export default function BaseLayout() {
+function BaseLayout(props: any) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -36,10 +38,6 @@ export default function BaseLayout() {
     {
       title: 'Product List',
       slug: 'product-list',
-    },
-    {
-      title: 'Pricing',
-      slug: 'pricing',
     },
     {
       title: 'Blog',
@@ -158,6 +156,20 @@ export default function BaseLayout() {
               ))}
             </Box>
 
+            <Badge badgeContent={props.cartItemsCount} color="warning" sx={{ marginRight: '30px' }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="primary-search-account-menu"
+                aria-haspopup="true"
+                color="inherit"
+                sx={{ padding: 0 }}
+              >
+                <Link href="cart" className="no-underline text-white">
+                  <ShoppingCart />
+                </Link>
+              </IconButton>
+            </Badge>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -197,3 +209,11 @@ export default function BaseLayout() {
     </div>
   );
 }
+
+const mapStateToProps = (state: any) => {
+  return {
+    cartItemsCount: state.cart.data.length,
+  };
+};
+
+export default connect(mapStateToProps, null)(BaseLayout);

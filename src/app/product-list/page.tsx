@@ -1,13 +1,28 @@
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 import ProductCard from './components/ProductCard';
 import { Grid } from '@mui/material';
+import { getProducts } from '../redux/products/actions';
+import { connect } from 'react-redux';
 
-export default async function ProductList() {
-  const products = await getProducts();
+type product = {
+  name: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  date: string;
+  id: number;
+};
+
+function ProductList({ products, fetchProducts }: { products: Array<product>; fetchProducts: () => any }) {
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <div>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {products.map((product: any, i: number) => {
+        {products.map((product: product, i: number) => {
           return (
             <Grid item xs={3} key={i}>
               <ProductCard product={product} />
@@ -19,9 +34,16 @@ export default async function ProductList() {
   );
 }
 
-export async function getProducts() {
-  const res = await fetch('http://localhost:5000/products', { next: { revalidate: 60 } });
-  const products = await res.json();
+const mapStateToProps = (state: any) => {
+  return {
+    products: state.products.data as Array<product>,
+  };
+};
 
-  return products;
-}
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    fetchProducts: (): any => dispatch(getProducts()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
