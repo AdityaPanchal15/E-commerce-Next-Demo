@@ -44,6 +44,15 @@
       "price": 850,
       "date": "2023-08-07",
       "id": 5
+    },
+    {
+      "title": "Sky Blue T-shirt",
+      "name": "S",
+      "price": "600",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at dapibus ipsum. Nulla augue diam, ornare non justo iaculis, laoreet ultricies augue. Maecenas ex nulla, molestie accumsan vestibulum eget, imperdiet eu felis. Etiam ultricies mi vel urna aliquam, nec blandit leo lobortis.",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROw6gYn97Cn2INEKj7jLjtAU7l-nD_8vAadA&usqp=CAU",
+      "date": "2023-08-11",
+      "id": 6
     }
   ]
 }

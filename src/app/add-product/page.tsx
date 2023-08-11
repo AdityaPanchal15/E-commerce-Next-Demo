@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 function AddProduct(props: any) {
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -15,7 +16,7 @@ function AddProduct(props: any) {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    props.addProduct({ title, name, description, imageUrl, date });
+    props.addProduct({ title, name, price, description, imageUrl, date });
     router.push('/product-list');
   }
 
@@ -36,6 +37,7 @@ function AddProduct(props: any) {
       >
         <TextField required fullWidth label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
         <TextField required fullWidth label="Name" value={name} onChange={(e) => setName(e.target.value)} />
+        <TextField required fullWidth label="Price" value={price} type="number" onChange={(e) => setPrice(e.target.value)} />
         <TextField required fullWidth label="Image Url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
         <TextField required fullWidth label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
         <TextField required type="date" fullWidth value={date} onChange={(e) => setDate(e.target.value)} />

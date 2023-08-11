@@ -15,7 +15,7 @@ export const useStripeCheckout = (cartItems: Array<any>) => {
         images: [item.imageUrl],
       },
     },
-    quantity: 1,
+    quantity: item.quantity,
   }))
 
   return stripe.checkout.sessions.create({

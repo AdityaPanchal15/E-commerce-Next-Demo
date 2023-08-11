@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 
 export default function CartPriceSection({ cartItems }: any) {
   const totalAmount = useMemo(() => {
-    return cartItems.reduce((total: number, item: any) => total + item.price, 0);
+    return cartItems.reduce((total: number, item: any) => total + item.price * item.quantity, 0);
   }, [cartItems]);
   return (
     <Card variant="outlined" sx={{ mb: '10px' }}>
@@ -14,9 +14,9 @@ export default function CartPriceSection({ cartItems }: any) {
             return (
               <Typography variant="body1" component="div" display="flex" justifyContent="space-between" key={i}>
                 <p>
-                  {item.title} x {1}
+                  {item.title} x {item.quantity}
                 </p>
-                <p>&#8377;{item.price}</p>
+                <p>&#8377;{item.price * item.quantity}</p>
               </Typography>
             );
           })}

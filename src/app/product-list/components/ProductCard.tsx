@@ -1,11 +1,20 @@
-import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, Button } from '@mui/material';
+import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, Button, Grid } from '@mui/material';
 import { red } from '@mui/material/colors';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import React from 'react';
-import { addToCart } from '@/app/redux/cart/actions';
+import React, { useEffect, useState } from 'react';
+import { addToCart, changeProductQuantity } from '@/app/redux/cart/actions';
 import { connect } from 'react-redux';
+import QuantityButton from '@/app/components/buttons/QuantityButton';
 
-function ProductCard({ product, addToCart }: any) {
+function ProductCard({ product, addToCart, isAdded, changeProductQuantity }: any) {
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    if (isAdded) {
+      changeProductQuantity({ productId: product.id, quantity: quantity });
+    }
+  }, [quantity]);
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
@@ -31,9 +40,20 @@ function ProductCard({ product, addToCart }: any) {
           {product.description.substr(0, 200) + '...'}
         </Typography>
       </CardContent>
-      <Button variant="contained" sx={{ margin: '0 0 10px 15px' }} color="primary" onClick={() => addToCart(product)}>
-        Add to Cart
-      </Button>
+      <CardContent>
+        <Grid container spacing={2} justifyContent="space-between" alignItems="center">
+          <Grid item xs={6}></Grid>
+          <Grid item xs={6}>
+            {isAdded ? (
+              <QuantityButton value={quantity} setValue={setQuantity} />
+            ) : (
+              <Button variant="contained" sx={{ margin: '0' }} color="primary" onClick={() => addToCart({ ...product, quantity: 1 })}>
+                Add to Cart
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+      </CardContent>
     </Card>
   );
 }
@@ -41,6 +61,7 @@ function ProductCard({ product, addToCart }: any) {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     addToCart: (payload: any) => dispatch(addToCart(payload)),
+    changeProductQuantity: (payload: any) => dispatch(changeProductQuantity(payload)),
   };
 };
 

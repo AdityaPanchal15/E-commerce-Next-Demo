@@ -14,18 +14,30 @@ type product = {
   id: number;
 };
 
-function ProductList({ products, fetchProducts }: { products: Array<product>; fetchProducts: () => any }) {
+function ProductList({
+  products,
+  cartProducts,
+  fetchProducts,
+}: {
+  products: Array<product>;
+  cartProducts: Array<product>;
+  fetchProducts: () => any;
+}) {
+  const isCartProduct = (id: number) => {
+    return cartProducts.findIndex((item) => item.id === id) >= 0;
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
   return (
     <div>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      <Grid container rowSpacing={{ xs: 1, sm: 2, md: 3 }} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         {products.map((product: product, i: number) => {
           return (
             <Grid item xs={3} key={i}>
-              <ProductCard product={product} />
+              <ProductCard product={product} isAdded={isCartProduct(product.id)} />
             </Grid>
           );
         })}
@@ -37,6 +49,7 @@ function ProductList({ products, fetchProducts }: { products: Array<product>; fe
 const mapStateToProps = (state: any) => {
   return {
     products: state.products.data as Array<product>,
+    cartProducts: state.cart.data as Array<product>,
   };
 };
 

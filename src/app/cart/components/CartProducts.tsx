@@ -11,8 +11,11 @@ function Product({ product, removeItem }: any) {
           <Typography variant="h5" component="div">
             {product.title}
           </Typography>
-          <Typography sx={{ mb: 1.5, fontWeight: 'bold' }} color="text.secondary">
+          <Typography sx={{ my: 1, fontWeight: 'bold' }} color="text.secondary">
             Price: &#8377;{product.price}
+          </Typography>
+          <Typography sx={{ my: 1, fontWeight: 'bold' }} color="text.secondary">
+            Quantity: {product.quantity}
           </Typography>
           <Typography variant="body2">{product.description}</Typography>
         </Box>
