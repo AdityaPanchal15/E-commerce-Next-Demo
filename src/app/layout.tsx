@@ -7,6 +7,7 @@ import BaseLayout from './components/BaseLayout';
 import { Container, CssBaseline, ThemeProvider } from '@mui/material';
 import BaseSpeedDial from './components/BaseSpeedDial';
 import { ReduxProvider } from './redux/provider';
+import AuthProvider from './context/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,16 +20,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html>
       <body>
-        <ReduxProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <BaseLayout />
-            <Container maxWidth="xl" sx={{ mt: 1 }}>
-              {children}
-            </Container>
-            <BaseSpeedDial />
-          </ThemeProvider>
-        </ReduxProvider>
+        <AuthProvider>
+          <ReduxProvider>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <BaseLayout />
+              <Container maxWidth="xl" sx={{ mt: 1 }}>
+                {children}
+              </Container>
+              <BaseSpeedDial />
+            </ThemeProvider>
+          </ReduxProvider>
+        </AuthProvider>
       </body>
     </html>
   );

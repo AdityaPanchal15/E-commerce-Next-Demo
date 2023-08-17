@@ -6,10 +6,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
 import { ShoppingCart } from '@mui/icons-material';
 import { connect } from 'react-redux';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 function BaseLayout(props: any) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const { data: session }: any = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/api/auth/signin');
+    },
+  });
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -55,11 +64,11 @@ function BaseLayout(props: any) {
     },
     {
       title: 'Dashboard',
-      slug: 'dashboard',
+      slug: '/',
     },
     {
       title: 'Logout',
-      slug: 'logout',
+      slug: '/api/auth/signout',
     },
   ];
 
@@ -173,7 +182,7 @@ function BaseLayout(props: any) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={session?.user?.name} src={session?.user?.image} />
                 </IconButton>
               </Tooltip>
               <Menu
